@@ -165,16 +165,16 @@ class dragAndAspectRatioModel:
 			df = pd.read_csv(fname, delimiter='\t')
 			classes[key] = self.createClasses(df)
 		return classes
-	def generateModelData(self, beta0, beta1, plotting=False):
+	def generateModelData(self, beta0, beta1):
 		drag_data = pd.DataFrame(data = None)
 		bins = {}
 		m_data = []
 		mdict = {}
-		if(plotting == True):
+		if(self.plotting == True):
 			plt.figure(figsize=[6, 5*self.nGasHoldups])
 		for i in range(self.nGasHoldups):
-			if(plotting == True):
-				plt.subplot(1, nGasHoldups, i+1)
+			if(self.plotting == True):
+				plt.subplot(1, self.nGasHoldups, i+1)
 			for j in range(self.nPressures):
 				eg = self.egReal[self.nGasHoldups*i +j]
 				T = self.temp[self.nGasHoldups*i + j]
@@ -186,7 +186,7 @@ class dragAndAspectRatioModel:
 				globalAverages = self.radialAverage(bins, self.pFolder[j], self.egFolder[i], self.egReal[i], rhog, beta0, beta1)
 				dia = globalAverages[:,0]
 				dragCoeff = globalAverages[:,2]
-				if(plotting  == True):
+				if(self.plotting  == True):
 					plt.scatter(dia, dragCoeff, label='P = ' + str(pFolder[j]) + 'MPa')
 				keystring = 'P' + str(int(1000*self.pFolder[j])) + '-eG' + str(int(10000*self.egFolder[i]))
 				Re = (self.rhol*globalAverages[:,1]*0.001*globalAverages[:,0])/self.mul
@@ -210,12 +210,12 @@ class dragAndAspectRatioModel:
 				mdf = pd.DataFrame(mdict)
 				m_data.append(mdf)
 		
-			if(plotting == True):
+			if(self.plotting == True):
 				plt.xlabel(r'bubble diameter (mm)')
 				plt.ylabel(r'drag coefficient (-)')
 				plt.legend()
 
-		if(plotting == True):
+		if(self.plotting == True):
 			plt.savefig('dragPlot.png', dpi=300)
 			plt.close()
 
@@ -293,15 +293,15 @@ class dragAndAspectRatioModel:
 		else:
 			params = least_squares(self.objFunc, params_de.x, jac=jacobian, method=method_, verbose=2)
 		
-		plotting = True
-		xydata = self.generateModelData(params.x[0], params.x[1], plotting)
+		self.plotting = True
+		xydata = self.generateModelData(params.x[0], params.x[1])
 		Re = xydata['Re']
 		Eo = xydata['Eo']
 		eg = xydata['eg']
 		pNorm = xydata['pNorm']
 		Cdi = xydata['Cdi']
 
-		CdiPred = self.model(params.x[2], params.x[2], params.x[4], Re, Eo, eg, pNorm)
+		CdiPred = self.model(params.x[2], params.x[3], params.x[4], Re, Eo, eg, pNorm)
 
 		sr = (Cdi - CdiPred)**2
 		ssr = np.sum(sr)
@@ -320,8 +320,8 @@ class dragAndAspectRatioModel:
 
 		print(f"Parameters for Drag Model")
 		print(f"-------------------------")
-		print(f"beta2 = {params.x[2]:.2f} +/- {perr[2]:.2f}, beta3 = {params.x[3]:.2f} +/- {perr[1]:.2f}")
-		print(f"beta3 = {params.x[4]:.2f} +/- {perr[4]:.2f}")
+		print(f"beta2 = {params.x[2]:.2f} +/- {perr[2]:.2f}, beta3 = {params.x[3]:.2f} +/- {perr[3]:.2f}")
+		print(f"beta4 = {params.x[4]:.2f} +/- {perr[4]:.2f}")
 
 		residuals = Cdi - CdiPred
 		
@@ -358,6 +358,6 @@ class dragAndAspectRatioModel:
 			plt.legend()
 			i = i + 1
 		plt.savefig('distribution.png', dpi=300)
-		plt.clos()
+		plt.close()
 		df_plot.to_csv('chord-length-cdf.txt', sep='\t', index=False)
 

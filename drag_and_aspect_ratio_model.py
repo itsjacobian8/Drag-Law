@@ -187,7 +187,7 @@ class dragAndAspectRatioModel:
 				dia = globalAverages[:,0]
 				dragCoeff = globalAverages[:,2]
 				if(self.plotting  == True):
-					plt.scatter(dia, dragCoeff, label='P = ' + str(pFolder[j]) + 'MPa')
+					plt.scatter(dia, dragCoeff, label='P = ' + str(self.pFolder[j]) + 'MPa')
 				keystring = 'P' + str(int(1000*self.pFolder[j])) + '-eG' + str(int(10000*self.egFolder[i]))
 				Re = (self.rhol*globalAverages[:,1]*0.001*globalAverages[:,0])/self.mul
 				Eo = ((self.rhol - rhog)*g*(0.001*globalAverages[:,0])**2)/self.sigma

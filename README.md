@@ -8,7 +8,7 @@ Work was published in Chemical Engineering Science: https://doi.org/10.1016/j.ce
 CHANGES
 ------
 
-I have recently added a few python scripts to allow those who wish to fit both drag and aspect ratio models using the this data to do so.
+I have recently added a few python scripts to allow those who wish to fit both drag and aspect ratio models using this data to do so.
 
 It should be noted that this is an indirect way of determining bubble shape which could be far from reality.
 

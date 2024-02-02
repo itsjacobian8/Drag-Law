@@ -15,7 +15,7 @@ inputs['temp'] = [300.45, 300.235, 301.290, 303.340, 300.96, 300.29, 302.20, 303
 
 minChord = 0.20
 maxChord = 3.00
-chordIncrement = 0.05
+chordIncrement = 0.20
 nClasses = int(round((maxChord - minChord)/chordIncrement))
 
 inputs['minChord'] = minChord
@@ -29,8 +29,6 @@ inputs['UL'] = 0.03
 inputs['rRatio'] = ['-0.80', '-0.60', '-0.40', '-0.20', '0', '0.20', '0.40', '0.60', '0.80']
 
 R = 0.5*0.1016
-rR = [-0.80, -0.60, -0.40, -0.20, 0.0, 0.20, 0.40, 0.60, 0.80]
-
 A0 = 0.50*pi*(R**2 - (-0.80*R)**2)
 A1 = 0.50*pi*((-0.80*R)**2 - (-0.60*R)**2)
 A2 = 0.50*pi*((-0.60*R)**2 - (-0.40*R)**2)

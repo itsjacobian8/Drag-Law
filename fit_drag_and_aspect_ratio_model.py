@@ -53,4 +53,5 @@ if __name__ == '__main__':
 	method = 'trf'
 	solver = 'lsmr'
 	case.fit(betas0, bounds, jacobian, method, solver)
+	case.plotBSD()
 

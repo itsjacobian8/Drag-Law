@@ -309,7 +309,7 @@ class dragAndAspectRatioModel:
 		rsq = 1.0 - (ssr/sst)
 
 		U, s, Vh = svd(params.jac)
-		tol = np.finf(float).eps*s[0]*max(params.jac.shape)
+		tol = np.finfo(float).eps*s[0]*max(params.jac.shape)
 		w = s > tol
 		cov = (Vh[w].T/s[w]**2) @ Vh[w]
 		perr = np.sqrt(np.diag(cov))/np.sqrt(len(Cdi) - 1)
